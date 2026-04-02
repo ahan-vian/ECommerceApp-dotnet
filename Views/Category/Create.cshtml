@@ -1,0 +1,32 @@
+@model ECommerceApp.Models.Category
+@{
+    ViewData["Title"] = "Buat Kategori";
+}
+<div class="container p-3">
+    <div class="row pt-4 mb-3">
+        <div class="col-12">
+            <h2 class="text-primary">
+                Buat Kategori Baru
+            </h2>
+        </div>
+    </div>
+    <form asp-action="Create" method="post">
+        <div class="border p-3 mt-4">
+            <div>
+                <label asp-for="Name" class="form-label">Nama Kategori</label>
+                <input asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:150px">Simpan</button>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    Kembali
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+        @{
+            <partial name="_ValidationScriptsPartial" />
+        }
+    }
