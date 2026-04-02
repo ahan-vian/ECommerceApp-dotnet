@@ -1,0 +1,16 @@
+@model Category
+<form action="post">
+    <input type="hidden" asp-for="Id">
+    <div class="border p-3 mt-4">
+        <h2 class="text-danger">Hapus Kategori</h2>
+        <hr>
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" disabled class="form-control">
+        </div>
+        <p>Apakah anda yakin ingin menghapus kategori ini?</p>
+        <button type="submit" class="btn btn-danger">Hapus permanen</button>
+        <a asp-action="Index" class="btn btn-secondary">Batal</a>
+    </div>
+</form>
+
