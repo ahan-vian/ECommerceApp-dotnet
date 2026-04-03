@@ -1,0 +1,63 @@
+@model ECommerceApp.Models.ShoppingCartVM
+
+@{
+    ViewData["Title"] = "Keranjang Belanja";
+}
+
+<div class="container p-3">
+    <div class="row pt-4 mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Keranjang Belanja</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Lanjut Belanja</a>
+        </div>
+    </div>
+
+    @if (Model.CartDetails.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="bg-primary text-white">
+                    <th>Produk</th>
+                    <th>Harga Satuan</th>
+                    <th class="text-center">Jumlah</th>
+                    <th class="text-end">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartDetails)
+                {
+                    <tr>
+                        <td>
+                            <b>@item.Product.Name</b><br/>
+                            <small class="text-muted">@item.Product.Category.Name</small>
+                        </td>
+                        <td>Rp @item.Product.Price.ToString("N0")</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-end">Rp @((item.Product.Price * item.Quantity).ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end text-danger fw-bold fs-5">TOTAL KESELURUHAN:</td>
+                    <td class="text-end text-danger fw-bold fs-5">Rp @Model.OrderTotal.ToString("N0")</td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div class="row mt-4">
+            <div class="col-12 col-md-4 offset-md-8">
+                <button class="btn btn-success w-100 fw-bold">PROSES CHECKOUT</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center mt-4" role="alert">
+            <h4>Keranjang belanja Anda masih kosong!</h4>
+            <p>Silakan kembali ke halaman utama untuk melihat produk kami.</p>
+        </div>
+    }
+</div>

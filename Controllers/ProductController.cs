@@ -18,7 +18,7 @@ namespace ECommerceApp.Controllers
 
         public IActionResult Index()
         {
-            var objProductList = _contex.products.Include(p => p.Category).ToList();
+            var objProductList = _contex.Products.Include(p => p.Category).ToList();
             return View(objProductList);
         }
 
@@ -46,7 +46,7 @@ namespace ECommerceApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _contex.products.Add(obj);
+                _contex.Products.Add(obj);
                 _contex.SaveChanges();
             }
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 namespace ECommerceApp.Models
 {
     public class Category

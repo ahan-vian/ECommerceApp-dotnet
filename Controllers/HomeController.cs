@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ECommerceApp.Models;
 using ECommerceApp.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace ECommerceApp.Controllers;
 
@@ -17,14 +19,14 @@ public class HomeController : Controller
     }
     public IActionResult Index()
     {
-        var productList = _context.products.Include(u => u.Category).ToList();
+        var productList = _context.Products.Include(u => u.Category).ToList();
         return View(productList);
     }
 
     public IActionResult Details(int id)
     {
-        var product = _context.products.Include(u => u.Category).FirstOrDefault(u=> u.Id == id);
-        if(product == null)
+        var product = _context.Products.Include(u => u.Category).FirstOrDefault(u => u.Id == id);
+        if (product == null)
         {
             return NotFound();
         }
@@ -39,5 +41,28 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpPost]
+    public IActionResult AddToCart(int productId, int quantity)
+    {
+        List<CartItem> cart = new List<CartItem>();
+        string? cartJson = HttpContext.Session.GetString("ShoppingCart");
+        if (!string.IsNullOrEmpty(cartJson))
+        {
+            cart = JsonSerializer.Deserialize<List<CartItem>>(cartJson) ?? new List<CartItem>();
+        }
+        var existingItem = cart.FirstOrDefault(c => c.ProductId == productId);
+        if (existingItem != null)
+        {
+            existingItem.Quantity += quantity;
+        }
+        else
+        {
+            cart.Add(new CartItem { ProductId = productId, Quantity = quantity });
+        }
+
+        HttpContext.Session.SetString("ShoppingCart", JsonSerializer.Serialize(cart));
+        return RedirectToAction("Index");
     }
 }
